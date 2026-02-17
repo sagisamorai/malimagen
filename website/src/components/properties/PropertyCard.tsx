@@ -19,14 +19,22 @@ export function PropertyCard({ property }: PropertyCardProps) {
   const isRented = property.status === "RENTED";
   const isUnavailable = isSold || isRented;
 
+  // Use featuredImage if it's a valid URL, otherwise fallback to first image
+  const displayImage =
+    property.featuredImage && property.featuredImage.startsWith("http")
+      ? property.featuredImage
+      : property.images?.[0]?.url && property.images[0].url.startsWith("http")
+      ? property.images[0].url
+      : property.featuredImage;
+
   return (
     <Link href={`/properties/${property.slug}`} className="group block">
       <article className="bg-white rounded-2xl border border-gold/10 shadow-premium overflow-hidden transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1">
         {/* Image */}
         <div className="relative h-56 bg-gradient-to-br from-primary-50 to-gray-100 overflow-hidden">
-          {property.featuredImage ? (
+          {displayImage ? (
             <Image
-              src={property.featuredImage}
+              src={displayImage}
               alt={property.title}
               fill
               className={`object-cover group-hover:scale-105 transition-transform duration-500 ${isUnavailable ? "brightness-75 saturate-[0.6]" : ""}`}
