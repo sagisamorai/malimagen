@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Phone, Menu, X, MessageCircle } from "lucide-react";
 import { NAV_ITEMS, SITE_CONFIG } from "@/lib/constants";
@@ -55,14 +56,15 @@ export function Header() {
       <div className="container mx-auto">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-primary to-primary-400 rounded-xl flex items-center justify-center text-gold font-bold text-lg shadow-premium group-hover:shadow-premium-lg transition-all">
-              מ
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-bold text-primary leading-tight">מלי מגן</span>
-              <span className="text-[10px] md:text-xs text-gold font-medium tracking-wide">תיווך נדל״ן מקצועי</span>
-            </div>
+          <Link href="/" className="block group">
+            <Image
+              src="/images/logo.png"
+              alt="מלי מגן - נדל״ן"
+              width={160}
+              height={60}
+              className="h-10 md:h-14 w-auto object-contain group-hover:opacity-90 transition-opacity"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}
