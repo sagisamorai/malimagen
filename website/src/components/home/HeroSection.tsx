@@ -82,8 +82,8 @@ export async function HeroSection() {
           </div>
 
           {/* Hero Image */}
-          <div className="hidden lg:block relative">
-            <div className="relative">
+          <div className="hidden lg:flex relative items-center justify-center">
+            <div className="relative max-w-[320px]">
               {heroImage ? (
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
                   <div className="aspect-[3/4] relative">
@@ -92,11 +92,11 @@ export async function HeroSection() {
                       alt={SITE_CONFIG.name}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 1200px) 50vw, 500px"
+                      sizes="320px"
                       priority
                     />
                     {/* Subtle gradient overlay at bottom */}
-                    <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
                   </div>
                 </div>
               ) : (
@@ -113,12 +113,12 @@ export async function HeroSection() {
               )}
 
               {/* Floating badge */}
-              <div className="absolute -bottom-4 -right-4 bg-gold text-primary px-6 py-3 rounded-2xl shadow-gold-lg font-bold text-sm z-10">
+              <div className="absolute -bottom-4 -right-4 bg-gold text-primary px-5 py-2.5 rounded-2xl shadow-gold-lg font-bold text-sm z-10">
                 ⭐ מומלצת #1 באזור
               </div>
 
               {/* Decorative element */}
-              <div className="absolute -top-4 -left-4 w-24 h-24 border-2 border-gold/20 rounded-2xl -z-10" />
+              <div className="absolute -top-4 -left-4 w-20 h-20 border-2 border-gold/20 rounded-2xl -z-10" />
             </div>
           </div>
         </div>
