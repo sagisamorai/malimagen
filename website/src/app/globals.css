@@ -5,10 +5,10 @@
 @layer base {
   :root {
     --primary: #041E3E;
-    --gold: #C6A55A;
-    --gold-light: #EBD9AA;
+    --gold: #9AACBE;
+    --gold-light: #C1CFDD;
     --background: #FFFFFF;
-    --background-warm: #FDF8F0;
+    --background-warm: #F5F7FA;
   }
 
   html {
@@ -72,11 +72,11 @@
   }
 
   .gradient-text-gold {
-    @apply bg-clip-text text-transparent bg-gradient-to-l from-gold-500 to-gold-300;
+    @apply bg-clip-text text-transparent bg-gradient-to-l from-accent via-accent-light to-accent;
   }
 
   .btn-gold {
-    @apply bg-gradient-to-l from-gold-500 via-gold-400 to-gold-500 text-white font-semibold
+    @apply bg-gradient-to-l from-accent-dark via-accent to-accent-dark text-white font-semibold
            shadow-gold hover:shadow-gold-lg transition-all duration-300 hover:-translate-y-0.5;
   }
 
