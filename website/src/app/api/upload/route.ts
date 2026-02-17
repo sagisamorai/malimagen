@@ -13,6 +13,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Check that Blob token is configured
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error("BLOB_READ_WRITE_TOKEN is not configured");
+    return NextResponse.json(
+      { error: "שירות אחסון התמונות לא מוגדר. יש להגדיר BLOB_READ_WRITE_TOKEN." },
+      { status: 500 }
+    );
+  }
+
   try {
     const formData = await req.formData();
     const files = formData.getAll("files") as File[];
@@ -55,8 +64,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ files: uploadedFiles });
   } catch (error) {
     console.error("Upload error:", error);
+    const message = error instanceof Error ? error.message : "שגיאה בהעלאת הקבצים";
     return NextResponse.json(
-      { error: "שגיאה בהעלאת הקבצים" },
+      { error: message },
       { status: 500 }
     );
   }
