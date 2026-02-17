@@ -12,8 +12,9 @@ interface Props {
 }
 
 async function getPost(slug: string) {
+  const decodedSlug = decodeURIComponent(slug);
   return db.blogPost.findFirst({
-    where: { slug, published: true },
+    where: { slug: decodedSlug, published: true },
     include: { category: true },
   });
 }

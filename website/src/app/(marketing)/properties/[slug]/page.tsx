@@ -17,8 +17,9 @@ interface Props {
 }
 
 async function getProperty(slug: string) {
+  const decodedSlug = decodeURIComponent(slug);
   return db.property.findUnique({
-    where: { slug },
+    where: { slug: decodedSlug },
     include: { images: { orderBy: { order: "asc" } }, area: true },
   });
 }
