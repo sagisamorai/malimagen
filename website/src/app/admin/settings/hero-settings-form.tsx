@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Save, Upload, Loader2, X, Sparkles, User } from "lucide-react";
@@ -16,6 +17,22 @@ export function HeroSettingsForm({ initialImage }: HeroSettingsFormProps) {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const saveImage = async (imageUrl: string | null) => {
+    setSaving(true);
+    try {
+      const result = await updateHeroImage(imageUrl);
+      if (result.success) {
+        toast.success("תמונת ה-Hero נשמרה בהצלחה");
+        router.refresh();
+      } else {
+        toast.error(result.error || "שגיאה בשמירה");
+      }
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -43,8 +60,9 @@ export function HeroSettingsForm({ initialImage }: HeroSettingsFormProps) {
       if (!res.ok) throw new Error("שגיאה בהעלאה");
 
       const data = await res.json();
-      setImage(data.files[0].url);
-      toast.success("התמונה הועלתה בהצלחה");
+      const url = data.files[0].url;
+      setImage(url);
+      await saveImage(url);
     } catch {
       toast.error("שגיאה בהעלאת התמונה");
     } finally {
@@ -53,18 +71,13 @@ export function HeroSettingsForm({ initialImage }: HeroSettingsFormProps) {
     }
   };
 
+  const handleRemove = async () => {
+    setImage(null);
+    await saveImage(null);
+  };
+
   const handleSave = async () => {
-    setSaving(true);
-    try {
-      const result = await updateHeroImage(image);
-      if (result.success) {
-        toast.success("תמונת ה-Hero נשמרה בהצלחה");
-      } else {
-        toast.error(result.error || "שגיאה בשמירה");
-      }
-    } finally {
-      setSaving(false);
-    }
+    await saveImage(image);
   };
 
   return (
@@ -101,7 +114,7 @@ export function HeroSettingsForm({ initialImage }: HeroSettingsFormProps) {
                       />
                       <button
                         type="button"
-                        onClick={() => setImage(null)}
+                        onClick={handleRemove}
                         className="absolute top-2 left-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow-lg z-10"
                       >
                         <X className="w-4 h-4" />

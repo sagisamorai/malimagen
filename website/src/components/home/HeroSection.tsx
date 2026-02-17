@@ -3,10 +3,21 @@ import Image from "next/image";
 import { Phone, Search, ArrowLeft, User } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
-import { getHeroImage } from "@/actions/settings";
+import { db } from "@/lib/db";
+
+async function getHeroImageDirect(): Promise<string | null> {
+  try {
+    const setting = await db.siteSetting.findUnique({
+      where: { key: "hero_image" },
+    });
+    return setting?.value || null;
+  } catch {
+    return null;
+  }
+}
 
 export async function HeroSection() {
-  const heroImage = await getHeroImage();
+  const heroImage = await getHeroImageDirect();
 
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
