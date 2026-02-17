@@ -54,17 +54,19 @@ export function Header() {
       </div>
 
       <div className="container mx-auto">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-20 md:h-24">
           {/* Logo */}
-          <Link href="/" className="block group">
-            <Image
-              src="/images/logo.png"
-              alt="מלי מגן - נדל״ן"
-              width={160}
-              height={60}
-              className="h-10 md:h-14 w-auto object-contain group-hover:opacity-90 transition-opacity"
-              priority
-            />
+          <Link href="/" className="block group shrink-0">
+            <div className="bg-gradient-to-br from-primary to-primary-400 rounded-xl px-4 py-2 md:px-5 md:py-2.5 shadow-premium group-hover:shadow-premium-lg transition-all">
+              <Image
+                src="/images/logo.png"
+                alt="מלי מגן - נדל״ן"
+                width={200}
+                height={75}
+                className="h-12 md:h-16 w-auto object-contain"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Desktop Nav */}
