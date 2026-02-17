@@ -43,11 +43,17 @@ export function PropertyForm({ property, areas }: PropertyFormProps) {
     defaultValues: property
       ? {
           ...property,
+          neighborhood: property.neighborhood ?? undefined,
+          complex: property.complex ?? undefined,
           areaId: property.areaId || undefined,
           floor: property.floor ?? undefined,
           totalFloors: property.totalFloors ?? undefined,
           sizeGarden: property.sizeGarden ?? undefined,
           yearBuilt: property.yearBuilt ?? undefined,
+          featuredImage: property.featuredImage ?? undefined,
+          seoTitle: property.seoTitle ?? undefined,
+          seoDescription: property.seoDescription ?? undefined,
+          seoKeywords: property.seoKeywords ?? undefined,
         }
       : {
           city: "ראש העין",

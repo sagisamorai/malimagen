@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   MapPin, BedDouble, Ruler, Building2, Calendar, Car, Package, Shield,

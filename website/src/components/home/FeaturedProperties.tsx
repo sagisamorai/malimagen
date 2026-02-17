@@ -5,14 +5,17 @@ import { Button } from "@/components/ui/Button";
 import { PropertyCard } from "@/components/properties/PropertyCard";
 
 export async function FeaturedProperties() {
-  let properties: Awaited<ReturnType<typeof db.property.findMany>> = [];
-  try {
-    properties = await db.property.findMany({
+  const fetchFeatured = () =>
+    db.property.findMany({
       where: { published: true, featured: true },
       include: { images: true, area: true },
       orderBy: { createdAt: "desc" },
       take: 3,
     });
+
+  let properties: Awaited<ReturnType<typeof fetchFeatured>> = [];
+  try {
+    properties = await fetchFeatured();
   } catch {
     return null;
   }

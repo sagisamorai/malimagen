@@ -62,7 +62,7 @@ async function getProperties(params: PropertyFilterParams) {
 
 export default async function PropertiesPage({ searchParams }: Props) {
   let areaOptions: { value: string; label: string }[] = [];
-  let properties: Awaited<ReturnType<typeof db.property.findMany>> = [];
+  let properties: Awaited<ReturnType<typeof getProperties>>["properties"] = [];
   let total = 0;
   let totalPages = 0;
   let page = 1;
