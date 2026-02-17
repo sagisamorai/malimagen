@@ -1,8 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { unlink } from "fs/promises";
-import path from "path";
+import { del } from "@vercel/blob";
 
 // DELETE - remove an image
 export async function DELETE(
@@ -15,7 +14,6 @@ export async function DELETE(
   }
 
   try {
-    // Get the image record
     const image = await db.propertyImage.findUnique({
       where: { id: params.imageId },
     });
@@ -50,14 +48,13 @@ export async function DELETE(
       });
     }
 
-    // Try to delete the file from disk
+    // Try to delete from Vercel Blob
     try {
-      if (image.url.startsWith("/uploads/")) {
-        const filePath = path.join(process.cwd(), "public", image.url);
-        await unlink(filePath);
+      if (image.url.includes("blob.vercel-storage.com")) {
+        await del(image.url);
       }
     } catch {
-      // File might not exist, that's ok
+      // Blob deletion failed, not critical
     }
 
     return NextResponse.json({ success: true });
