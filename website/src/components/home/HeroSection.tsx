@@ -96,7 +96,7 @@ export async function HeroSection() {
 
           {/* Hero Image */}
           <div className="hidden lg:flex relative items-center justify-center">
-            <div className="relative max-w-[320px]">
+            <div className="relative w-[320px]">
               {heroImage ? (
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
                   <div className="aspect-[3/4] relative">
