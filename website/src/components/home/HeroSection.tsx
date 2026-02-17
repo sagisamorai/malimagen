@@ -1,19 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Search, ArrowLeft, Building2, Home, Layers, TreePine } from "lucide-react";
+import { Phone, Search, ArrowLeft, User } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
-import { getHeroCategoryData } from "@/actions/settings";
-
-const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  APARTMENT: <Building2 className="w-5 h-5" />,
-  COTTAGE: <Home className="w-5 h-5" />,
-  PENTHOUSE: <Layers className="w-5 h-5" />,
-  GARDEN_APT: <TreePine className="w-5 h-5" />,
-};
+import { getHeroImage } from "@/actions/settings";
 
 export async function HeroSection() {
-  const categories = await getHeroCategoryData();
+  const heroImage = await getHeroImage();
 
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
@@ -88,73 +81,44 @@ export async function HeroSection() {
             </div>
           </div>
 
-          {/* Visual Side - Category Grid with Real Images */}
+          {/* Hero Image */}
           <div className="hidden lg:block relative">
             <div className="relative">
-              {/* Main Card */}
-              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/10">
-                <div className="grid grid-cols-2 gap-4">
-                  {categories.map((cat) => (
-                    <Link
-                      key={cat.type}
-                      href={`/properties?type=${cat.type}`}
-                      className="group relative aspect-square rounded-2xl overflow-hidden border border-white/10 transition-all hover:border-gold/40 hover:shadow-lg hover:shadow-gold/10"
-                    >
-                      {/* Image or Placeholder */}
-                      {cat.image ? (
-                        <>
-                          <Image
-                            src={cat.image}
-                            alt={cat.label}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-700"
-                            sizes="(max-width: 1200px) 50vw, 200px"
-                          />
-                          {/* Dark overlay for readability */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-colors" />
-                        </>
-                      ) : (
-                        <div className="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors">
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                        </div>
-                      )}
-
-                      {/* Category Info */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-3">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all group-hover:scale-110 ${
-                          cat.image
-                            ? "bg-gold/90 text-primary shadow-lg shadow-gold/30"
-                            : "bg-gold/20 text-gold"
-                        }`}>
-                          {CATEGORY_ICONS[cat.type]}
-                        </div>
-                        <span className="text-white font-bold text-base drop-shadow-lg">
-                          {cat.label}
-                        </span>
-                        {cat.propertyCount > 0 && (
-                          <span className="mt-1.5 text-[11px] text-gold/90 bg-black/40 backdrop-blur-sm px-2.5 py-0.5 rounded-full font-medium">
-                            {cat.propertyCount} נכסים
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Hover arrow */}
-                      <div className="absolute bottom-3 left-3 w-7 h-7 bg-gold/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all shadow-lg">
-                        <ArrowLeft className="w-3.5 h-3.5 text-primary" />
-                      </div>
-                    </Link>
-                  ))}
+              {heroImage ? (
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                  <div className="aspect-[3/4] relative">
+                    <Image
+                      src={heroImage}
+                      alt={SITE_CONFIG.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1200px) 50vw, 500px"
+                      priority
+                    />
+                    {/* Subtle gradient overlay at bottom */}
+                    <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
+                  </div>
                 </div>
-                <div className="mt-5 pt-5 border-t border-white/10 text-center">
-                  <p className="text-white/50 text-sm mb-1">נכסים חמים ממתינים לכם</p>
-                  <p className="text-gold font-semibold">פסגות אפק, ראש העין</p>
+              ) : (
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+                  <div className="aspect-[3/4] flex flex-col items-center justify-center gap-4 p-8">
+                    <div className="w-24 h-24 rounded-full bg-gold/20 flex items-center justify-center">
+                      <User className="w-12 h-12 text-gold" />
+                    </div>
+                    <p className="text-white/40 text-sm text-center">
+                      ניתן להעלות תמונה דרך פנאל הניהול
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Floating badge */}
-              <div className="absolute -bottom-4 -right-4 bg-gold text-primary px-6 py-3 rounded-2xl shadow-gold-lg font-bold text-sm">
+              <div className="absolute -bottom-4 -right-4 bg-gold text-primary px-6 py-3 rounded-2xl shadow-gold-lg font-bold text-sm z-10">
                 ⭐ מומלצת #1 באזור
               </div>
+
+              {/* Decorative element */}
+              <div className="absolute -top-4 -left-4 w-24 h-24 border-2 border-gold/20 rounded-2xl -z-10" />
             </div>
           </div>
         </div>
