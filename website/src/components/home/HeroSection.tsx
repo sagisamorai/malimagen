@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import { unstable_noStore as noStore } from "next/cache";
 import { Phone, Search, ArrowLeft, User } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
 import { db } from "@/lib/db";
 
 async function getHeroImageDirect(): Promise<string | null> {
+  noStore();
   try {
     const setting = await db.siteSetting.findUnique({
       where: { key: "hero_image" },
