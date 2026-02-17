@@ -1,0 +1,14 @@
+# WordPress backup & extraction
+*.wpress
+extracted/
+
+# Python/scripts
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# User uploaded files (generated at runtime)
+website/public/uploads/

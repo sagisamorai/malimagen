@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #041E3E;
+    --gold: #C6A55A;
+    --gold-light: #EBD9AA;
+    --background: #FFFFFF;
+    --background-warm: #FDF8F0;
+  }
+
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-gray-900 font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gold/40 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gold/60;
+  }
+
+  ::selection {
+    @apply bg-gold/20 text-primary;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-20 md:py-28;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-gray-500 mb-12 max-w-2xl mx-auto;
+  }
+
+  .gold-line {
+    @apply w-16 h-1 bg-gradient-to-l from-gold-400 to-gold-200 rounded-full;
+  }
+
+  .gold-line-center {
+    @apply w-16 h-1 bg-gradient-to-l from-gold-400 to-gold-200 rounded-full mx-auto;
+  }
+
+  .card-premium {
+    @apply bg-white rounded-2xl border border-gray-100 shadow-premium overflow-hidden
+           transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1;
+  }
+
+  .gradient-text-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-l from-gold-500 to-gold-300;
+  }
+
+  .btn-gold {
+    @apply bg-gradient-to-l from-gold-500 via-gold-400 to-gold-500 text-white font-semibold
+           shadow-gold hover:shadow-gold-lg transition-all duration-300 hover:-translate-y-0.5;
+  }
+
+  .divider-gold {
+    @apply border-t border-gold/20;
+  }
+}
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
