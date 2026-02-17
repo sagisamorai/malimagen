@@ -11,13 +11,16 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-  let posts: Awaited<ReturnType<typeof db.blogPost.findMany>> = [];
-  try {
-    posts = await db.blogPost.findMany({
+  const fetchPosts = () =>
+    db.blogPost.findMany({
       where: { published: true },
       include: { category: true },
       orderBy: { publishedAt: "desc" },
     });
+
+  let posts: Awaited<ReturnType<typeof fetchPosts>> = [];
+  try {
+    posts = await fetchPosts();
   } catch {
     // DB not available
   }
