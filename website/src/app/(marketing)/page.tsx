@@ -31,7 +31,9 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HeroSection />
+      <Suspense fallback={<div className="min-h-[92vh] bg-gradient-hero" />}>
+        <HeroSection />
+      </Suspense>
       <ServicesSection />
       <Suspense fallback={<div className="section-padding" />}>
         <FeaturedProperties />

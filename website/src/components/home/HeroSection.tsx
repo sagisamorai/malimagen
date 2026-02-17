@@ -1,9 +1,20 @@
 import Link from "next/link";
-import { Phone, Search, Star, ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { Phone, Search, ArrowLeft, Building2, Home, Layers, TreePine } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
+import { getHeroCategoryData } from "@/actions/settings";
 
-export function HeroSection() {
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  APARTMENT: <Building2 className="w-5 h-5" />,
+  COTTAGE: <Home className="w-5 h-5" />,
+  PENTHOUSE: <Layers className="w-5 h-5" />,
+  GARDEN_APT: <TreePine className="w-5 h-5" />,
+};
+
+export async function HeroSection() {
+  const categories = await getHeroCategoryData();
+
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
       {/* Background */}
@@ -26,7 +37,7 @@ export function HeroSection() {
           <div className="text-right">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-gold border border-gold/20 px-5 py-2.5 rounded-full text-sm font-medium mb-8">
-              <Star className="w-4 h-4 fill-gold" />
+              <span className="text-gold">⭐</span>
               מומחית נדל״ן בפסגות אפק, ראש העין
             </div>
 
@@ -77,26 +88,64 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Visual Side */}
+          {/* Visual Side - Category Grid with Real Images */}
           <div className="hidden lg:block relative">
             <div className="relative">
               {/* Main Card */}
-              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/10">
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/10">
                 <div className="grid grid-cols-2 gap-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="aspect-square bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-colors">
-                      <div className="text-center">
-                        <div className="w-12 h-12 bg-gold/20 rounded-xl flex items-center justify-center mx-auto mb-3">
-                          <Star className="w-5 h-5 text-gold" />
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.type}
+                      href={`/properties?type=${cat.type}`}
+                      className="group relative aspect-square rounded-2xl overflow-hidden border border-white/10 transition-all hover:border-gold/40 hover:shadow-lg hover:shadow-gold/10"
+                    >
+                      {/* Image or Placeholder */}
+                      {cat.image ? (
+                        <>
+                          <Image
+                            src={cat.image}
+                            alt={cat.label}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-700"
+                            sizes="(max-width: 1200px) 50vw, 200px"
+                          />
+                          {/* Dark overlay for readability */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-colors" />
+                        </>
+                      ) : (
+                        <div className="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                         </div>
-                        <span className="text-white/60 text-sm">
-                          {["דירות", "קוטג׳ים", "פנטהאוזים", "דירות גן"][i - 1]}
+                      )}
+
+                      {/* Category Info */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-3">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all group-hover:scale-110 ${
+                          cat.image
+                            ? "bg-gold/90 text-primary shadow-lg shadow-gold/30"
+                            : "bg-gold/20 text-gold"
+                        }`}>
+                          {CATEGORY_ICONS[cat.type]}
+                        </div>
+                        <span className="text-white font-bold text-base drop-shadow-lg">
+                          {cat.label}
                         </span>
+                        {cat.propertyCount > 0 && (
+                          <span className="mt-1.5 text-[11px] text-gold/90 bg-black/40 backdrop-blur-sm px-2.5 py-0.5 rounded-full font-medium">
+                            {cat.propertyCount} נכסים
+                          </span>
+                        )}
                       </div>
-                    </div>
+
+                      {/* Hover arrow */}
+                      <div className="absolute bottom-3 left-3 w-7 h-7 bg-gold/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all shadow-lg">
+                        <ArrowLeft className="w-3.5 h-3.5 text-primary" />
+                      </div>
+                    </Link>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t border-white/10 text-center">
+                <div className="mt-5 pt-5 border-t border-white/10 text-center">
                   <p className="text-white/50 text-sm mb-1">נכסים חמים ממתינים לכם</p>
                   <p className="text-gold font-semibold">פסגות אפק, ראש העין</p>
                 </div>
