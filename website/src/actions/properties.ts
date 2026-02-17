@@ -6,9 +6,8 @@ import { requireAuth } from "@/lib/auth";
 import { propertySchema, type PropertyFormData } from "@/lib/schemas";
 
 export async function createProperty(data: PropertyFormData) {
-  const userId = await requireAuth();
-
   try {
+    const userId = await requireAuth();
     const validated = propertySchema.parse(data);
 
     const property = await db.property.create({
@@ -61,9 +60,8 @@ export async function createProperty(data: PropertyFormData) {
 }
 
 export async function updateProperty(id: string, data: PropertyFormData) {
-  await requireAuth();
-
   try {
+    await requireAuth();
     const validated = propertySchema.parse(data);
 
     const property = await db.property.update({
@@ -80,25 +78,25 @@ export async function updateProperty(id: string, data: PropertyFormData) {
         neighborhood: validated.neighborhood || null,
         complex: validated.complex || null,
         rooms: validated.rooms,
-        floor: validated.floor ?? null,
-        totalFloors: validated.totalFloors ?? null,
+        floor: validated.floor !== undefined ? validated.floor : null,
+        totalFloors: validated.totalFloors !== undefined ? validated.totalFloors : null,
         sizeBuilt: validated.sizeBuilt,
-        sizeGarden: validated.sizeGarden || null,
-        yearBuilt: validated.yearBuilt ?? null,
-        parking: validated.parking,
-        storage: validated.storage,
-        safeRoom: validated.safeRoom,
-        elevator: validated.elevator,
-        airCondition: validated.airCondition,
-        balcony: validated.balcony,
-        renovated: validated.renovated,
-        accessible: validated.accessible,
+        sizeGarden: validated.sizeGarden !== undefined ? validated.sizeGarden : null,
+        yearBuilt: validated.yearBuilt !== undefined ? validated.yearBuilt : null,
+        parking: !!validated.parking,
+        storage: !!validated.storage,
+        safeRoom: !!validated.safeRoom,
+        elevator: !!validated.elevator,
+        airCondition: !!validated.airCondition,
+        balcony: !!validated.balcony,
+        renovated: !!validated.renovated,
+        accessible: !!validated.accessible,
         featuredImage: validated.featuredImage || null,
         seoTitle: validated.seoTitle || null,
         seoDescription: validated.seoDescription || null,
         seoKeywords: validated.seoKeywords || null,
-        featured: validated.featured,
-        published: validated.published,
+        featured: !!validated.featured,
+        published: validated.published !== false,
         areaId: validated.areaId || null,
       },
     });

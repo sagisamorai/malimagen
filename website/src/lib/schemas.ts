@@ -14,6 +14,16 @@ export const contactSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactSchema>;
 
+// Helper: coerce to number, but treat empty string as undefined
+const optionalNumber = z
+  .union([z.string(), z.number(), z.null()])
+  .optional()
+  .transform((val) => {
+    if (val === null || val === undefined || val === "") return undefined;
+    const num = Number(val);
+    return isNaN(num) ? undefined : num;
+  });
+
 export const propertySchema = z.object({
   title: z.string().min(3, "כותרת חייבת להכיל לפחות 3 תווים"),
   slug: z.string().min(1, "slug נדרש"),
@@ -35,26 +45,26 @@ export const propertySchema = z.object({
   neighborhood: z.string().optional(),
   complex: z.string().optional(),
   rooms: z.coerce.number().positive("מספר חדרים נדרש"),
-  floor: z.coerce.number().optional().nullable(),
-  totalFloors: z.coerce.number().optional().nullable(),
+  floor: optionalNumber,
+  totalFloors: optionalNumber,
   sizeBuilt: z.coerce.number().positive("שטח בנוי נדרש"),
-  sizeGarden: z.coerce.number().optional().nullable(),
-  yearBuilt: z.coerce.number().optional().nullable(),
-  parking: z.boolean().default(false),
-  storage: z.boolean().default(false),
-  safeRoom: z.boolean().default(false),
-  elevator: z.boolean().default(false),
-  airCondition: z.boolean().default(false),
-  balcony: z.boolean().default(false),
-  renovated: z.boolean().default(false),
-  accessible: z.boolean().default(false),
+  sizeGarden: optionalNumber,
+  yearBuilt: optionalNumber,
+  parking: z.coerce.boolean().default(false),
+  storage: z.coerce.boolean().default(false),
+  safeRoom: z.coerce.boolean().default(false),
+  elevator: z.coerce.boolean().default(false),
+  airCondition: z.coerce.boolean().default(false),
+  balcony: z.coerce.boolean().default(false),
+  renovated: z.coerce.boolean().default(false),
+  accessible: z.coerce.boolean().default(false),
   featuredImage: z.string().optional(),
   areaId: z.string().optional(),
   seoTitle: z.string().optional(),
   seoDescription: z.string().optional(),
   seoKeywords: z.string().optional(),
-  featured: z.boolean().default(false),
-  published: z.boolean().default(true),
+  featured: z.coerce.boolean().default(false),
+  published: z.coerce.boolean().default(true),
 });
 
 export type PropertyFormData = z.infer<typeof propertySchema>;
